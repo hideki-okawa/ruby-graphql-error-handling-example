@@ -8,6 +8,8 @@ module Mutations
     field :sample, Types::SampleType, null: false, description: '作成したサンプル'
 
     def resolve(name:)
+      # sample = Sample.new(name: name)
+    
       sample = Sample.create!(name:)
       { sample: }
     end

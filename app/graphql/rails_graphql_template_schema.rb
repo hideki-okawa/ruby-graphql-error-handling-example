@@ -9,6 +9,10 @@ class RailsGraphqlTemplateSchema < GraphQL::Schema
   use GraphQL::Batch
 
   # GraphQL-Ruby calls this when something goes wrong while running a query:
+  rescue_from(ActiveRecord::RecordInvalid) do |err, obj, args, ctx, field|
+    # Raise a graphql-friendly error with a custom message
+    raise GraphQL::ExecutionError.new("", extensions: { code: "RECORD_INVALID", full_messages: err.record.errors.full_messages })
+  end
 
   # Union and Interface Resolution
   def self.resolve_type(_abstract_type, _obj, _ctx)
